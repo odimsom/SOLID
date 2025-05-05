@@ -1,4 +1,8 @@
-﻿using SOLID.Entitys.SRP;
+﻿using SOLID.Entitys.OCP.Country;
+using SOLID.Entitys.OCP.Interfaces;
+using SOLID.Entitys.OCP;
+using SOLID.Entitys.SRP;
+using System.Runtime;
 
 class Program
 {
@@ -18,5 +22,16 @@ class Program
 
         impresora.Imprimir(persona);
         servicioCorreo.EnviarCorreo(persona, "Hola Carlos, este es un mensaje de prueba.");
+
+        //Implementatiton OCP
+        var taxCalculator = new TaxCalculator(new ITaxStrategy[]
+        {
+            new IndiaTaxStrategy(),
+            new USATaxStrategy(),
+            new UKTaxStrategy()
+        });
+
+        decimal impuesto = taxCalculator.Calculate(60000, 10000, "India");
+        Console.WriteLine($"Impuesto calculado: {impuesto:C}");
     }
 }
